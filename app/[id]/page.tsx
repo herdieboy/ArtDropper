@@ -1,7 +1,7 @@
 import Image from 'next/image'
 
 export default async function Work({ params } : { params: { id: string } }) {
-  const id = (await params).id
+  const { id } = params
   const data = await fetch(`https://api.smk.dk/api/v1/art/search/?keys=${id}&fields=object_number,titles,colors,image_thumbnail,production,production_date&filters=[has_image:true],[object_names:maleri],[public_domain:true]&offset=0&rows=1`)
   const object = await data.json()
   const items = object.items[0]
