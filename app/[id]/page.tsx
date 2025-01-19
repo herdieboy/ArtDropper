@@ -1,5 +1,4 @@
-import Image from 'next/image'
-import { GetServerSideProps } from 'next'
+import Image from 'next/image';
 
 interface Params {
   id: string;
@@ -15,7 +14,17 @@ interface WorkProps {
   };
 }
 
-const Work = ({ item }: WorkProps) => {
+async function fetchItem(id: string): Promise<WorkProps['item']> {
+  const response = await fetch(
+    `https://api.smk.dk/api/v1/art/search/?keys=${id}&fields=object_number,titles,colors,image_thumbnail,production,production_date&filters=[has_image:true],[object_names:maleri],[public_domain:true]&offset=0&rows=1`
+  );
+  const object = await response.json();
+  return object.items[0];
+}
+
+const Work = async ({ params }: { params: Params }) => {
+  const item = await fetchItem(params.id);
+
   return (
     <div className="h-dvh flex flex-col justify-center items-center gap-[1rem]">
       <div className="relative w-[30rem] max-w-[90vw] aspect-square">
@@ -49,21 +58,6 @@ const Work = ({ item }: WorkProps) => {
       </div>
     </div>
   );
-};
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { id } = context.params as Params; // Accessing params directly
-  const response = await fetch(
-    `https://api.smk.dk/api/v1/art/search/?keys=${id}&fields=object_number,titles,colors,image_thumbnail,production,production_date&filters=[has_image:true],[object_names:maleri],[public_domain:true]&offset=0&rows=1`
-  );
-  const object = await response.json();
-  const item = object.items[0];
-
-  return {
-    props: {
-      item,
-    },
-  };
 };
 
 export default Work;
