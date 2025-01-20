@@ -48,7 +48,7 @@ export default function Page() {
         {artworks && artworks.items.map((item: items) => (
           <li key={item.object_number}>
             <a href={`/${item.object_number}`} className="relative flex w-full aspect-square rounded-[1rem] overflow-hidden group bg-slate-800">
-              <Image className="object-fill group-hover:scale-110 transition-all" placeholder="empty" src={item.image_thumbnail} fill sizes="(max-width: 640px) 100vw, (max-width: 770px) 50vw, (max-width: 1024px) 30vw, 20vw" alt={item.titles[0]} />
+              <Image className="object-cover group-hover:scale-110 transition-all" placeholder="empty" src={item.image_thumbnail} fill sizes="(max-width: 640px) 100vw, (max-width: 770px) 50vw, (max-width: 1024px) 30vw, 20vw" alt={item.titles[0]} />
             </a>
           </li>
         ))}
